@@ -15,7 +15,7 @@
                                         <h5 class="card-title text-primary">{{ $title ?? '' }}</h5>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#add-user">
-                                            Add Users
+                                            Add Course
                                         </button>
                                     </div>
                                 </div>
@@ -25,12 +25,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>NIP</th>
-                                                    <th>Name Instructor</th>
-                                                    <th>Level</th>
-                                                    <th>Email</th>
-                                                    <th>Phone Number</th>
-                                                    <th>Address</th>
+                                                    <th>Title</th>
+                                                    <th>Instructor</th>
+                                                    <th>Class</th>
+                                                    <th>Description</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -38,86 +36,92 @@
                                                 @php
                                                     $no = 1;
                                                 @endphp
-                                                @foreach ($users as $user)
+                                                @foreach ($courses as $course)
                                                     <tr>
                                                         <td>{{ $no++ }}. </td>
-                                                        <td>{{ $user->nip }}</td>
-                                                        <td>{{ $user->name }}</td>
-                                                        <td>{{ $user->major->name_major ?? 'Admin' }}</td>
-                                                        <td>{{ $user->email }}</td>
-                                                        <td>{{ $user->phone }}</td>
-                                                        <td>{{ $user->address }}</td>
-                                                        <td>{{ $user->created_at }}</td>
+                                                        <td>{{ $course->title }}</td>
+                                                        <td>{{ $course->users->name }}</td>
+                                                        <td>{{ $course->major->name_major }}</td>
+                                                        <td>{{ $course->description }}</td>
+                                                        <td>{{ $course->created_at }}</td>
                                                         <td>
-                                                            <a href="javascript:void(0)" class="btn btn-secondary"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#edit-users-{{ $user->id }}">EDIT</a>
-                                                            <form action="{{ route('users.destroy', $user->id) }}"
-                                                                method="POST" style="display: inline;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-light"
-                                                                    onclick="return confirm('Are you sure you want to delete this instructor?')">DELETE</button>
-                                                            </form>
+                                                            <div class="d-flex justify-content-end">
+                                                                <a href="javascript:void(0)" class="btn btn-secondary me-2"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#edit-course-{{ $course->id }}">EDIT</a>
+                                                                <form action="{{ route('course.destroy', $course->id) }}"
+                                                                    method="POST" style="display: inline;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-light"
+                                                                        onclick="return confirm('Are you sure you want to delete this instructor?')">DELETE</button>
+                                                                </form>
+                                                            </div>
+                                                            <div class="d-flex justify-content-center mt-3">
+                                                                <a href="javascript:void(0)" class="btn btn-primary me-2"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#edit-course-{{ $course->id }}">DETAIL</a>
+                                                            </div>
                                                         </td>
                                                     </tr>
 
                                                     <!-- MODAL EDIT -->
-                                                    <div class="modal fade" id="edit-users-{{ $user->id }}"
+                                                    <div class="modal fade" id="edit-course-{{ $course->id }}"
                                                         tabindex="-1" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title">Edit Instructor</h5>
+                                                                    <h5 class="modal-title">Edit Course</h5>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <form action="{{ route('users.update', $user->id) }}"
+                                                                    <form
+                                                                        action="{{ route('course.update', $course->id) }}"
                                                                         method="post">
                                                                         @csrf
                                                                         @method('PUT')
                                                                         <div class="row">
                                                                             <div class="col mb-3">
                                                                                 <label
-                                                                                    for="editClassyName{{ $user->id }}"
-                                                                                    class="form-label">Name</label>
+                                                                                    for="editClassyName{{ $course->id }}"
+                                                                                    class="form-label">Title</label>
                                                                                 <input type="text" name="name"
-                                                                                    id="editClassName{{ $user->id }}"
+                                                                                    id="editClassName{{ $course->id }}"
                                                                                     class="form-control"
-                                                                                    value="{{ $user->name }}" />
+                                                                                    value="{{ $course->name }}" />
                                                                             </div>
                                                                         </div>
                                                                         <div class="row">
                                                                             <div class="col mb-3">
                                                                                 <label
-                                                                                    for="editClassyName{{ $user->id }}"
-                                                                                    class="form-label">Email
+                                                                                    for="editClassyName{{ $course->id }}"
+                                                                                    class="form-label">Files
                                                                                 </label>
                                                                                 <input type="text" name="email"
-                                                                                    id="editClassName{{ $user->id }}"
+                                                                                    id="editClassName{{ $course->id }}"
                                                                                     class="form-control"
-                                                                                    value="{{ $user->email }}" />
+                                                                                    value="{{ $course->email }}" />
                                                                             </div>
                                                                         </div>
                                                                         <div class="row">
                                                                             <div class="col mb-3">
                                                                                 <label
-                                                                                    for="editClassyName{{ $user->id }}"
+                                                                                    for="editClassyName{{ $course->id }}"
                                                                                     class="form-label"> Phone</label>
                                                                                 <input type="text" name="phone"
-                                                                                    id="editClassName{{ $user->id }}"
+                                                                                    id="editClassName{{ $course->id }}"
                                                                                     class="form-control"
-                                                                                    value="{{ $user->phone }}" />
+                                                                                    value="{{ $course->phone }}" />
                                                                             </div>
                                                                         </div>
                                                                         <div class="row">
                                                                             <div class="col mb-3">
                                                                                 <label
-                                                                                    for="editClassyName{{ $user->id }}"
+                                                                                    for="editClassyName{{ $course->id }}"
                                                                                     class="form-label">Address
                                                                                 </label>
-                                                                                <textarea name="address" id="" cols="30" rows="5" class="form-control">{{ $user->address }}</textarea>
+                                                                                <textarea name="address" id="" cols="30" rows="5" class="form-control">{{ $course->address }}</textarea>
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -143,43 +147,45 @@
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel1">Add New User</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel1">Add New Course</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{ route('users.store') }}" method="post">
+                                                <form action="{{ route('course.store') }}" method="post"
+                                                    enctype="multipart/form-data">
                                                     @csrf
                                                     <div class="row">
                                                         <div class="col mb-3">
                                                             <label for="editClassyName" class="form-label">
-                                                                Name</label>
-                                                            <input type="text" name="name" id="mame"
-                                                                class="form-control" placeholder="Input User Name" />
+                                                                Title</label>
+                                                            <input type="text" name="title" id="title"
+                                                                class="form-control" placeholder="Input Title" />
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col mb-3">
-                                                            <label for="editClassyName" class="form-label">Email
+                                                            <label for="editClassyName" class="form-label">File
                                                             </label>
-                                                            <input type="text" name="email" id="email"
-                                                                class="form-control" placeholder="Input User Email" />
+                                                            <input type="file" name="file" id="file"
+                                                                class="form-control" />
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col mb-3">
                                                             <label for="editClassyName" class="form-label">
-                                                                Phone</label>
-                                                            <input type="number" name="phone" id="phone"
-                                                                class="form-control" placeholder="Input User Phone" />
+                                                                Link Video</label>
+                                                            <input type="text" name="link" id="link"
+                                                                class="form-control"
+                                                                placeholder="Input Link Video (optional)" />
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col mb-3">
                                                             <label for="editClassyName" class="form-label">
-                                                                Address
+                                                                Description
                                                             </label>
-                                                            <textarea name="address" id="" cols="30" rows="5" class="form-control"></textarea>
+                                                            <textarea name="desc" id="" cols="30" rows="5" class="form-control"></textarea>
                                                         </div>
                                                     </div>
                                             </div>

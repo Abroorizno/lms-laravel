@@ -26,6 +26,15 @@
             </a>
         </li>
 
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Data Users</span></li>
+
+        <li class="menu-item">
+            <a href="/users" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Analytics">Users</div>
+            </a>
+        </li>
+
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Data PPKD</span></li>
 
         <li class="menu-item">
@@ -97,6 +106,11 @@
                 <div data-i18n="Form Elements">Moduls</div>
             </a>
             <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/course" class="menu-link">
+                        <div data-i18n="Basic Inputs">Courses</div>
+                    </a>
+                </li>
                 <li class="menu-item">
                     <a href="/pos" class="menu-link">
                         <div data-i18n="Basic Inputs">Week 1</div>

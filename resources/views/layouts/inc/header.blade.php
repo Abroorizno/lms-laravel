@@ -52,7 +52,7 @@
                     </li> --}}
                 <li>
                     @if (auth()->user()->level_id == 1)
-                        <a class="dropdown-item" href="/users">
+                        <a class="dropdown-item" href="/users-account">
                             <i class="tf-icons bx bx-user me-2"></i>
                             <span class="align-middle">Settings Users</span>
                         </a>

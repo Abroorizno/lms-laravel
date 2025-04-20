@@ -6,6 +6,7 @@ use App\Models\Level;
 use App\Models\Major;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -17,6 +18,14 @@ class UsersController extends Controller
         $users = User::with('major', 'level')->where('level_id', 1)->get();
 
         return view('users.index', compact('users', 'major', 'level'));
+    }
+
+    public function account()
+    {
+        $title = 'Account Instructor';
+        $data = User::with('major')->where('id', Auth::id())->first();
+
+        return view('instructor.account', compact('title', 'data'));
     }
 
     public function store(Request $request)
@@ -38,8 +47,7 @@ class UsersController extends Controller
 
         $data = [
             'nip' => $nip_code,
-            'class_id' => $request->class,
-            'level_id' => $request->level,
+            'level_id' => Level::where('id', 1)->first()->id,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -58,11 +66,25 @@ class UsersController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'password' => $request->password,
+            'password' => $request->password ? bcrypt($request->password) : User::where('id', $id)->value('password')
         ];
 
         User::where('id', $id)->update($data);
         return redirect()->route('users.index')->with('success', 'User Updated!');
+    }
+
+    public function updateAccount(Request $request, string $id)
+    {
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'password' => $request->password ? bcrypt($request->password) : User::where('id', $id)->value('password')
+        ];
+
+        User::where('id', $id)->update($data);
+        return redirect()->route('instruktur')->with('success', 'Instructor Updated!');
     }
 
     public function destroy(string $id)
